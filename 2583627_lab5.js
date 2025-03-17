@@ -65,7 +65,7 @@ app.post('/books/:id/details',(req, res)=>{
   res.status(201).json(newDetail);
 });
 
-app.delete('/books/:id/details/:detailID', (req, res) => {
+app.delete('/books/:id/details/:detailID',(req,res)=>{
   const bookID = parseInt(req.params.id);
   const detailID = req.params.detailID;
   const book = books.find(b => b.id === bookID);
