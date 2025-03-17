@@ -8,14 +8,14 @@ let whoami = {
   }
 let books = [];
 
-app.get('/whoami',(req,res) => {
+app.get('/whoami',(req,res)=>{
     res.status(200).json(whoami);
 })
-app.get('/books',(req,res) => {
+app.get('/books',(req,res)=>{
   res.status(200).json(books);
 });
 
-app.get('/books/:id',(req,res) => {
+app.get('/books/:id',(req,res)=>{
   const bookID = parseInt(req.params.id);
   const book = books.find(b => b.id === bookID);
   if (!book) {
@@ -24,15 +24,17 @@ app.get('/books/:id',(req,res) => {
   res.status(200).json(book);
 });
 
-app.post('/books',(req,res) => {
+app.post('/books',(req,res)=>{
   const newBook = req.body;
   newBook.id = books.length + 1;
   newBook.details = newBook.details || []; 
+  if (!newBook.title) {
+    return res.status(400).json({error:"title is required"});}
   books.push(newBook);
   res.status(201).json(newBook);
 });
 
-app.put('/books/:id',(req,res) => {
+app.put('/books/:id',(req,res)=>{
   const bookID = parseInt(req.params.id);
   const bookIndex = books.findIndex(c=>c.id===bookID);
   if (bookIndex===-1) {
@@ -76,6 +78,6 @@ app.delete('/books/:id/details/:detailID',(req,res)=>{
   res.status(204).send();
 });
 
-app.listen(port, () => {
+app.listen(port,()=>{
   console.log(`Server running on http://localhost:${port}`);
 });
