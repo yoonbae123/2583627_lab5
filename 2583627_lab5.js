@@ -11,11 +11,11 @@ let books = [];
 app.get('/whoami',(req,res) => {
     res.status(200).json(whoami);
 })
-app.get('/books',(req, res) => {
+app.get('/books',(req,res) => {
   res.status(200).json(books);
 });
 
-app.get('/books/:id',(req, res) => {
+app.get('/books/:id',(req,res) => {
   const bookID = parseInt(req.params.id);
   const book = books.find(b => b.id === bookID);
   if (!book) {
@@ -24,7 +24,7 @@ app.get('/books/:id',(req, res) => {
   res.status(200).json(book);
 });
 
-app.post('/books',(req, res) => {
+app.post('/books',(req,res) => {
   const newBook = req.body;
   newBook.id = books.length + 1;
   newBook.details = newBook.details || []; 
@@ -32,11 +32,11 @@ app.post('/books',(req, res) => {
   res.status(201).json(newBook);
 });
 
-app.put('/books/:id',(req, res) => {
+app.put('/books/:id',(req,res) => {
   const bookID = parseInt(req.params.id);
-  const bookIndex = books.findIndex(c => c.id === bookID);
+  const bookIndex = books.findIndex(c=>c.id===bookID);
   if (bookIndex===-1) {
-    return res.status(404).json({ error: "not found" });
+    return res.status(404).json({error:"not found"});
   }else{
     const book = req.body;
     books[bookIndex] = book;
@@ -44,19 +44,18 @@ app.put('/books/:id',(req, res) => {
   }
 });
 
-app.delete('/books/:id', (req, res) => {
+app.delete('/books/:id',(req, res) => {
   const bookID = parseInt(req.params.id);
-  const bookIndex = books.findIndex(b => b.id === bookID);
-  if (bookIndex === -1) {
-    return res.status(404).json({error: "not found"});
-  }
-  books.splice(bookIndex, 1);
+  const bookIndex = books.findIndex(b=>b.id===bookID);
+  if (bookIndex===-1){
+    return res.status(404).json({error:"not found"});}
+  books.splice(bookIndex,1);
   res.status(204).send(); 
 });
 
-app.post('/books/:id/details', (req, res) => {
+app.post('/books/:id/details',(req,res)=>{
   const bookID = parseInt(req.params.id);
-  const book = books.find(b => b.id === bookID);
+  const book = books.find(b=>b.id===bookID);
   if (!book) {
     return res.status(404).json({error:"not found"});}
   const newDetail = req.body;
@@ -64,17 +63,16 @@ app.post('/books/:id/details', (req, res) => {
   res.status(201).json(newDetail);
 });
 
-app.delete('/books/:id/details/:detailID', (req, res) => {
+app.delete('/books/:id/details/:detailID',(req,res)=>{
   const bookID = parseInt(req.params.id);
-  const bookIndex = parseInt(req.params.bookIndex);
-  const book = books.find(b => b.id === bookID);
-  if (!book) {
-    return res.status(404).json({ error: "not found" });
-  }
-  if (bookIndex < 0 || bookIndex >= book.details.length) {
-    return res.status(400).json({ error: "Bad Missing required book details" });
-  }
-  book.details.splice(bookIndex, 1);
+  const detailID = req.params.detailID;
+  const book = books.find(b=>b.id===bookID);
+  if (!book){
+      return res.status(404).json({error:"Book not found"});}
+  const detailIndex =book.details.findIndex(d=>d.id===detailID);
+  if (detailIndex=== -1) {
+      return res.status(404).json({error:"Detail not found"});}
+  book.details.splice(detailIndex,1);
   res.status(204).send();
 });
 
