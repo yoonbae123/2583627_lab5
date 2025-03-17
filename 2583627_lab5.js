@@ -6,20 +6,7 @@ app.use(express.json());
 let whoami = {
     studentNumber: "2583627"
   }
-let books = [
-    {
-        id: "1",
-        title: "To Kill a Mockingbird",
-        details: [
-          {
-            id: "1",
-            author: "Harper Lee",
-            genre: "Fiction",
-            publicationYear: 1960
-          }
-        ]
-      }
-];
+let books = [];
 
 app.get('/whoami',(req,res) => {
     res.status(200).json(whoami);
@@ -40,7 +27,7 @@ app.get('/books/:id', (req, res) => {
 app.post('/books', (req, res) => {
   const newBook = req.body;
   newBook.id = books.length + 1;
-  newBook.details = []; 
+  newBook.details = newBook.details || []; 
   books.push(newBook);
   res.status(201).json(newBook);
 });
