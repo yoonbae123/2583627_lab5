@@ -4,7 +4,7 @@ const port = 3000;
 
 app.use(express.json());
 let whoami = {
-    studentNumber: "12345678"
+    studentNumber: "2583627"
   }
 let books = [
     {
@@ -21,6 +21,9 @@ let books = [
       }
 ];
 
+app.get('/whoami',(req,res) => {
+    res.status(200).json(whoami);
+})
 app.get('/books', (req, res) => {
   res.status(200).json(books);
 });
@@ -58,7 +61,7 @@ app.delete('/books/:id', (req, res) => {
   if (bookIndex === -1) {
     return res.status(404).json({ error: "not found" });
   }
-  cars.splice(carIndex, 1);
+  books.splice(bookIndex, 1);
   res.status(204).send(); 
 });
 
@@ -83,7 +86,7 @@ app.delete('/books/:id/details/:detailID', (req, res) => {
   if (bookIndex < 0 || bookIndex >= book.details.length) {
     return res.status(400).json({ error: "Bad Missing required book details" });
   }
-  book.specs.splice(bookIndex, 1);
+  book.details.splice(bookIndex, 1);
   res.status(204).send();
 });
 
